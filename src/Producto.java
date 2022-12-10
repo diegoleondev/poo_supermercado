@@ -56,8 +56,7 @@ public class Producto implements Acciones, Serializable {
     int i = 1;
     for (String cat : CATEGORIAS) {
       System.out.print((i++) + ") " + cat + " ");
-      if (i % 4 == 0)
-        System.out.println("");
+      System.out.println("");
     }
     System.out.print("\nIndique la Categoría: ");
     int valor;
@@ -141,7 +140,7 @@ public class Producto implements Acciones, Serializable {
   }
 
   public String toString() {
-    return precio + " " + nombre;
+    return stock + " $" + precio + " " + nombre;
   }
 
   public void setIdentificador(String identificador) {

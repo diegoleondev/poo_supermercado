@@ -1,11 +1,13 @@
 public class Cliente extends Persona {
   private String identificador;
-  private int puntos;
+  private float puntos;
+
   private Leer leer = new Leer();
   private Id id = new Id();
 
   public Cliente() {
     super();
+
     inicializar();
   }
 
@@ -15,9 +17,16 @@ public class Cliente extends Persona {
     inicializar();
   }
 
+  public Cliente(String nombre, String rfc, char genero, String telefono, String correo,
+      String direccion) {
+    super(nombre, rfc, genero, telefono, correo, direccion);
+
+    inicializar();
+  }
+
   private void inicializar() {
     identificador = id.alfanumerico();
-    puntos = 0;
+    puntos = 0f;
   }
 
   @Override
@@ -47,7 +56,6 @@ public class Cliente extends Persona {
         return;
 
       System.out.print("Introduzca el nuevo valor : ");
-      leer.unString();
       switch (opcion) {
         case 1:
           nombre = leer.unString();
@@ -59,13 +67,13 @@ public class Cliente extends Persona {
           telefono = leer.unString();
           break;
         case 4:
-          correo = leer.toString();
+          correo = leer.unString();
           break;
         case 5:
-          direccion = leer.toString();
+          direccion = leer.unString();
           break;
         case 6:
-          puntos = leer.unInt();
+          puntos = leer.unFloat();
           break;
       }
     }
@@ -89,12 +97,19 @@ public class Cliente extends Persona {
     return "Cliente".equals(nombre);
   }
 
-  public void setPuntos(int puntos) {
+  public void setPuntos(float puntos) {
     this.puntos = puntos;
   }
 
-  public int getPuntos() {
+  public float getPuntos() {
     return puntos;
   }
 
+  public String getIdentificador() {
+    return identificador;
+  }
+
+  public void setIdentificador(String identificador) {
+    this.identificador = identificador;
+  }
 }

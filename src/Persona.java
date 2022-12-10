@@ -2,20 +2,23 @@ import java.io.Serializable;
 
 public class Persona implements Acciones, Serializable {
   protected String nombre;
+  protected String rfc;
   protected char genero;
   protected String telefono;
   protected String correo;
   protected String direccion;
   protected boolean eliminada = false;
+
   private Leer leer = new Leer();
 
   public Persona() {
     capturar();
   }
 
-  public Persona(String nombre, char genero, String telefono, String correo,
+  public Persona(String nombre, String rfc, char genero, String telefono, String correo,
       String direccion) {
     this.nombre = nombre;
+    this.rfc = rfc;
     this.genero = genero;
     this.telefono = telefono;
     this.correo = correo;
@@ -24,20 +27,23 @@ public class Persona implements Acciones, Serializable {
 
   public Persona(Persona p) {
     this.nombre = p.getNombre();
+    this.rfc = p.getRfc();
     this.genero = p.getGenero();
     this.telefono = p.getTelefono();
     this.correo = p.getCorreo();
     this.direccion = p.getDireccion();
-
   }
 
   public boolean buscar(String s) {
-    return (nombre + genero + telefono + correo + direccion + eliminada).indexOf(s) != -1 ? true : false;
+    return (nombre + rfc + genero + telefono + correo + direccion + eliminada).indexOf(s) != -1 ? true : false;
   };
 
   public void capturar() {
     System.out.print("Nombre : ");
     nombre = leer.unString();
+
+    System.out.print("RFC : ");
+    rfc = leer.unString();
 
     System.out.print("Género : ");
     genero = leer.unChar();
@@ -61,6 +67,7 @@ public class Persona implements Acciones, Serializable {
 
   public void mostrar() {
     System.out.println("Nombre : " + nombre);
+    System.out.println("Nombre : " + rfc);
     System.out.println("Género : " + genero);
     System.out.println("Teléfono : " + telefono);
     System.out.println("Correo : " + correo);
@@ -87,6 +94,14 @@ public class Persona implements Acciones, Serializable {
     return nombre;
   }
 
+  protected void setRfc(String rfc) {
+    this.rfc = rfc;
+  }
+
+  protected String getRfc() {
+    return rfc;
+  }
+
   protected void setGenero(char genero) {
     this.genero = genero;
   }
@@ -108,7 +123,6 @@ public class Persona implements Acciones, Serializable {
   }
 
   protected String getCorreo() {
-
     return correo;
   }
 

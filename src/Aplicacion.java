@@ -1,56 +1,66 @@
 public class Aplicacion {
 
     public static void main(String[] args) throws Exception {
-
+        /*
+         * Datos data = new Datos();
+         * String[] folio = { "0" };
+         * 
+         * Archivo archivo = new Archivo();
+         * archivo.setCadenas(folio, "./db/folioCompra.ponyfile");
+         * archivo.setCadenas(folio, "./db/folioVenta.ponyfile");
+         * archivo.setCadenas(data.getCategorias(), "./db/categorias.ponyfile");
+         * archivo.setObjetos(data.getPersonas(), "./db/personas.ponyfile");
+         * archivo.setObjetos(data.getProductos(), "./db/productos.ponyfile");
+         */
         System.out.println("Panel de Direccion - Bodega Aurrera");
         Supermercado supermercado = new Supermercado("Bodega Aurrera", "Morelia");
 
         while (true) {
             switch (menu()) {
                 case 11:
-                    supermercado.mostrarPersonas("Cliente");
+                    supermercado.mostrarClientes();
                     break;
                 case 12:
-                    supermercado.capturarPersona("Cliente");
+                    supermercado.capturarCliente();
                     break;
                 case 13:
-                    supermercado.buscarPersona("Cliente");
+                    supermercado.buscarCliente();
                     break;
                 case 14:
-                    supermercado.modificarPersona("Cliente");
+                    supermercado.modificarCliente();
                     break;
                 case 15:
-                    supermercado.eliminarPersona("Cliente");
+                    supermercado.eliminarCliente();
                     break;
                 case 21:
-                    supermercado.mostrarPersonas("Empleado");
+                    supermercado.mostrarEmpleados();
                     break;
                 case 22:
-                    supermercado.capturarPersona("Empleado");
+                    supermercado.capturarEmpleado();
                     break;
                 case 23:
-                    supermercado.buscarPersona("Empleado");
+                    supermercado.buscarEmpleado();
                     break;
                 case 24:
-                    supermercado.modificarPersona("Empleado");
+                    supermercado.modificarEmpleado();
                     break;
                 case 25:
-                    supermercado.eliminarPersona("Empleado");
+                    supermercado.eliminarEmpleado();
                     break;
                 case 31:
-                    supermercado.mostrarPersonas("Proveedor");
+                    supermercado.mostrarProveedores();
                     break;
                 case 32:
-                    supermercado.capturarPersona("Proveedor");
+                    supermercado.capturarProveedor();
                     break;
                 case 33:
-                    supermercado.buscarPersona("Proveedor");
+                    supermercado.buscarProveedor();
                     break;
                 case 34:
-                    supermercado.modificarPersona("Proveedor");
+                    supermercado.modificarProveedor();
                     break;
                 case 35:
-                    supermercado.eliminarPersona("Proveedor");
+                    supermercado.eliminarProveedor();
                     break;
                 case 41:
                     supermercado.mostrarProductos();
@@ -82,6 +92,21 @@ public class Aplicacion {
                 case 55:
                     supermercado.eliminarVenta();
                     break;
+                case 61:
+                    supermercado.mostrarCompras();
+                    break;
+                case 62:
+                    supermercado.capturarCompra();
+                    break;
+                case 63:
+                    supermercado.buscarCompra();
+                    break;
+                case 64:
+                    supermercado.modificarCompra();
+                    break;
+                case 65:
+                    supermercado.eliminarCompra();
+                    break;
                 case 999:
                     supermercado.guardar();
                     return;
@@ -92,15 +117,15 @@ public class Aplicacion {
     public static int menu() throws Exception {
         Leer leer = new Leer();
 
-        System.out.println("\nMenú Principal");
-        System.out.println("1) Cliente 2) Empleado 3) Proveedor 4) Producto 5) Venta 6) Compra 0) Cancelar");
+        System.out.println("\n[#] Menú Principal");
+        System.out.println("1) Cliente 2) Empleado 3) Proveedor 4) Producto 5) Venta 6) Compra 0) Salir");
         System.out.print("Opción : ");
 
         int opccion = (leer.unIntEnRango(6) + 1) * 10;
         if (opccion == 0)
             return 999;
 
-        System.out.println("\nMenú Principal > Submenú");
+        System.out.println("\n[#] Submenú");
         System.out.println("1) Mostrar 2) Agregar 3) Buscar 4) Modificar 5) Eliminar 0) Cancelar");
         System.out.print("Acción : ");
 

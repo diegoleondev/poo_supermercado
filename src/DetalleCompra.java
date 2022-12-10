@@ -1,20 +1,21 @@
 import java.io.Serializable;
 
-public class DetalleVenta implements Serializable {
+public class DetalleCompra implements Serializable {
   private int cantidad;
   private float precio;
   private Producto producto;
+  private boolean eliminada;
 
   Leer leer = new Leer();
 
-  public DetalleVenta(Producto producto) {
+  public DetalleCompra(Producto producto) {
     this.producto = producto;
-
     capturar();
     inicializar();
   }
 
   private void inicializar() {
+    eliminada = false;
     precio = producto.getPrecio();
   }
 
@@ -29,22 +30,33 @@ public class DetalleVenta implements Serializable {
   }
 
   public void capturar() {
-    System.out.print("Cantidad : ");
+    System.out.print("Cantidad: ");
 
     while (true) {
-      int valor = leer.unInt();
+      int cantidad = leer.unInt();
 
-      if (valor > producto.getStock()) {
-        System.out.println("[~] No hay suficiente stock, ingrese una cantidad menor o igual a " + producto.getStock());
-      } else if (valor < 1) {
+      if (cantidad < 1) {
         System.out.println("[~] La cantidad no puede ser menor a uno");
-      } else {
-        cantidad = valor;
-        break;
+        System.out.print("Cantidad: ");
+        continue;
       }
 
-      System.out.print("Cantidad : ");
+      this.cantidad = cantidad;
+      break;
+
     }
+  }
+
+  public void eliminar() {
+    eliminada = true;
+  }
+
+  public boolean isEliminada() {
+    return eliminada;
+  }
+
+  public boolean equals(String id) {
+    return producto.equals(id);
   }
 
   public String toString() {

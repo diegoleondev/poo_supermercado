@@ -1,6 +1,3 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +11,8 @@ public class Supermercado {
   private int cProductos = 0;
   private Venta[] ventas = new Venta[500];
   private int cVentas = 0;
+  private Compra[] compras = new Compra[500];
+  private int cCompras = 0;
 
   Leer leer = new Leer();
   Archivo archivo = new Archivo();
@@ -27,6 +26,35 @@ public class Supermercado {
 
   public void inicializar() {
     cargar();
+  }
+
+  private void actualizarStock(Producto producto, int cantidad) {
+    for (Producto productoStock : filtrarProductosValidos()) {
+      if (!productoStock.equals(producto.getIdentificador()))
+        continue;
+
+      productoStock.setStock(productoStock.getStock() + cantidad);
+      System.out.println("[+] Stock actualizado. ");
+      return;
+    }
+
+    System.err.println("[!!] No se pudo actualizar el stock del producto. ");
+  }
+
+  private void actualizarPuntosCliente(Cliente cliente, float puntos) {
+    if (cliente == null)
+      return;
+    for (Persona persona : filtrarPersonas("Cliente")) {
+      Cliente clienteDB = (Cliente) persona;
+      if (!clienteDB.equals(cliente.getIdentificador()))
+        continue;
+
+      clienteDB.setPuntos(clienteDB.getPuntos() + puntos);
+      System.out.println("[+] Puntos actualizado. ");
+      return;
+    }
+
+    System.err.println("[!!] No se pudo actualizar los puntos del cliente. ");
   }
 
   private Persona[] filtrarPersonas(String filter) {
@@ -55,8 +83,6 @@ public class Supermercado {
     for (Persona persona : filtrarPersonas(filtro)) {
       System.out.println((contador++) + ".- " + persona.toString());
     }
-    System.out.println("0.- No seleccionar " + filtro);
-    System.out.println("");
     System.out.print("Indique el " + filtro + " : ");
 
     int valor = leer.unIntEnRango(personasFiltradas.length);
@@ -67,16 +93,23 @@ public class Supermercado {
     return personasFiltradas[valor];
   }
 
-  public void mostrarPersonas(String tipo) {
-    System.out.println("\nMenú Principal > Submenú > Mostrar " + tipo + "(s)");
-    for (Persona persona : filtrarPersonas(tipo)) {
+  private void mostrarPersonas(String tipo) {
+    System.out.println("\n[#] Mostrar " + tipo + "(s)");
+    Persona[] personasFiltradas = filtrarPersonas(tipo);
+
+    if (personasFiltradas == null) {
+      System.out.println("[~] No hay nada que mostrar. ");
+      return;
+    }
+
+    for (Persona persona : personasFiltradas) {
       System.out.println("");
       persona.mostrar();
     }
   }
 
-  public void capturarPersona(String tipo) {
-    System.out.println("\nMenú Principal > Submenú > Agregar " + tipo);
+  private void capturarPersona(String tipo) {
+    System.out.println("\n[#] Cpaturar " + tipo);
     switch (tipo) {
       case "Cliente":
         personas[cPersonas++] = new Cliente();
@@ -88,10 +121,11 @@ public class Supermercado {
         personas[cPersonas] = new Proveedor();
         break;
     }
+    System.out.println("[+] " + tipo + " capturado. ");
   }
 
-  public void buscarPersona(String tipo) {
-    System.out.println("\nMenú Principal > Submenú > Buscar " + tipo);
+  private void buscarPersona(String tipo) {
+    System.out.println("\n[#] Buscar " + tipo);
     System.out.print("Ingrese valor a buscar : ");
     String valor = leer.unString();
 
@@ -102,21 +136,24 @@ public class Supermercado {
       System.out.println("");
       persona.mostrar();
     }
+
   }
 
-  public void modificarPersona(String tipo) {
-    System.out.println("\nMenú Principal > Submenú > Modificar " + tipo);
+  private void modificarPersona(String tipo) {
+    System.out.println("\n[#] Modificar " + tipo);
 
+    System.out.println("0.- Cancelar");
     Persona persona = seleccionarPersona(tipo);
 
     if (persona == null)
       return;
 
     persona.modificar();
+    System.out.println("[+] " + tipo + " modificado. ");
   }
 
-  public void eliminarPersona(String tipo) {
-    System.out.println("\nMenú Principal > Submenú > Eliminar " + tipo);
+  private void eliminarPersona(String tipo) {
+    System.out.println("\n[#] Eliminar " + tipo);
 
     Persona persona = seleccionarPersona(tipo);
 
@@ -124,55 +161,88 @@ public class Supermercado {
       return;
 
     persona.eliminar();
+    System.out.println("[+] " + tipo + " eliminado. ");
   }
 
-  private String[] getCategorias() {
-    try {
-      List<String> bufferList = new ArrayList<String>();
+  public void mostrarClientes() {
+    mostrarPersonas("Cliente");
+  }
 
-      FileReader fileTarget = new FileReader("./db/categorias.ponyfile");
-      BufferedReader bReader = new BufferedReader(fileTarget);
+  public void capturarCliente() {
+    capturarPersona("Cliente");
+  }
 
-      String linea;
+  public void buscarCliente() {
+    buscarPersona("Cliente");
+  }
 
-      while ((linea = bReader.readLine()) != null)
-        bufferList.add(linea);
-      bReader.close();
+  public void modificarCliente() {
+    modificarPersona("Cliente");
+  }
 
-      String[] bufferArray = new String[bufferList.size()];
-      bufferList.toArray(bufferArray);
+  public void eliminarCliente() {
+    eliminarPersona("Cliente");
+  }
 
-      return bufferArray;
-    } catch (FileNotFoundException e) {
-      System.out.println("¡El fichero no existe!");
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
+  public void mostrarEmpleados() {
+    mostrarPersonas("Empleado");
+  }
 
-    return null;
+  public void capturarEmpleado() {
+    capturarPersona("Empleado");
+  }
+
+  public void buscarEmpleado() {
+    buscarPersona("Empleado");
+  }
+
+  public void modificarEmpleado() {
+    modificarPersona("Empleado");
+  }
+
+  public void eliminarEmpleado() {
+    eliminarPersona("Empleado");
+  }
+
+  public void mostrarProveedores() {
+    mostrarPersonas("Proveedor");
+  }
+
+  public void capturarProveedor() {
+    capturarPersona("Proveedor");
+  }
+
+  public void buscarProveedor() {
+    buscarPersona("Proveedor");
+  }
+
+  public void modificarProveedor() {
+    modificarPersona("Proveedor");
+  }
+
+  public void eliminarProveedor() {
+    eliminarPersona("Proveedor");
   }
 
   private String seleccionarCategoria() {
-    String[] CATEGORIAS = getCategorias();
+    String[] CATEGORIAS = archivo.getCadenas("./db/categorias.ponyfile");
 
     System.out.println("\nCategorías : ");
     int i = 1;
-    for (String cat : CATEGORIAS) {
-      System.out.print((i++) + ") " + cat + " ");
-      if (i % 4 == 0)
-        System.out.println("");
+    for (String categoria : CATEGORIAS) {
+      System.out.print((i++) + ") " + categoria + " \n");
     }
-    System.out.print("\nIndique la Categoría: ");
-    int valor;
+    System.out.print("Indique la Categoría: ");
+    int iCategoria;
 
-    while ((valor = leer.unIntEnRango(CATEGORIAS.length)) == -1) {
+    while ((iCategoria = leer.unIntEnRango(CATEGORIAS.length)) == -1) {
       System.out.print("No puede dejar este campo vacío, vuelva a seleccionar : ");
     }
 
-    return CATEGORIAS[valor];
+    return CATEGORIAS[iCategoria];
   }
 
-  private Producto[] getProductosValidos() {
+  private Producto[] filtrarProductosValidos() {
     List<Producto> lista = new ArrayList<Producto>();
 
     for (Producto producto : productos) {
@@ -195,7 +265,7 @@ public class Supermercado {
 
     String categoria = seleccionarCategoria();
 
-    for (Producto producto : getProductosValidos()) {
+    for (Producto producto : filtrarProductosValidos()) {
       if (!producto.buscar(categoria))
         continue;
       listaFiltrados.add(producto);
@@ -211,40 +281,41 @@ public class Supermercado {
     System.out.println("\n¿Cómo quieres listar los productos? ");
     System.out.println("1) Todos los productos. ");
     System.out.println("2) Productos de una Categoría. ");
-    System.out.println("0) Cancelar.");
-    System.out.print("Opccion: ");
-    int opccionListado = leer.unIntEnRango(2);
+    System.out.println("0) Continuar.");
+    System.out.print("Opción: ");
+    int opcionListado = leer.unIntEnRango(2);
 
-    if (opccionListado == -1)
+    if (opcionListado == -1)
       return null;
 
-    return opccionListado == 0 ? getProductosValidos() : getProductosFiltradosPorCategoria();
-
+    return opcionListado == 0 ? filtrarProductosValidos() : getProductosFiltradosPorCategoria();
   }
 
   private Producto seleccionarProducto() {
-    Producto[] productosFiltrados = getProductosFiltradosPorMenu();
+    while (true) {
+      Producto[] productosFiltrados = getProductosFiltradosPorMenu();
 
-    if (productosFiltrados == null)
-      return null;
+      if (productosFiltrados == null)
+        return null;
 
-    int i = 1;
-    System.out.println("\nProductos: ");
-    for (Producto producto : productosFiltrados)
-      System.out.println((i++) + ".- " + producto.toString());
-    System.out.println("0.- Cancelar");
+      int i = 1;
+      System.out.println("\nProductos: ");
+      for (Producto producto : productosFiltrados)
+        System.out.println((i++) + ".- " + producto.toString());
+      System.out.println("0.- Cancelar");
 
-    System.out.print("Seleccione un producto : ");
-    int valor = leer.unIntEnRango(productosFiltrados.length);
+      System.out.print("Seleccione un producto : ");
+      int valor = leer.unIntEnRango(productosFiltrados.length);
 
-    if (valor == -1)
-      return null;
+      if (valor == -1)
+        continue;
 
-    return productosFiltrados[valor];
+      return productosFiltrados[valor];
+    }
   }
 
   public void mostrarProductos() {
-    System.out.println("\nMenú Principal > Submenú > Mostrar Producto(s)");
+    System.out.println("\n[#] Mostrar Producto(s)");
     Producto[] productosFiltrados = getProductosFiltradosPorMenu();
 
     if (productosFiltrados == null) {
@@ -259,43 +330,52 @@ public class Supermercado {
   }
 
   public void capturarProducto() {
-    System.out.println("\nMenú Principal > Submenú > Agregar Producto");
+    System.out.println("\n[#] Agregar Producto");
     productos[cProductos++] = new Producto();
+
+    System.out.println("[+] Producto agregado.");
   }
 
   public void buscarProducto() {
-    System.out.println("\nMenú Principal > Submenú > Buscar Producto");
+    System.out.println("\n[#] Buscar Producto");
     System.out.print("Ingrese valor a buscar : ");
     String valor = leer.unString();
 
-    for (Producto producto : getProductosValidos()) {
+    for (Producto producto : filtrarProductosValidos()) {
       if (!producto.buscar(valor))
         continue;
 
       System.out.println("");
       producto.mostrar();
     }
+
   }
 
   public void modificarProducto() {
+    System.out.println("[#] Modificar producto. ");
+
     Producto producto = seleccionarProducto();
 
     if (producto == null)
       return;
 
     producto.modificar();
+    System.out.println("[+] Producto modificado.");
   }
 
   public void eliminarProducto() {
+    System.out.println("[#] Eliminar producto. ");
+
     Producto producto = seleccionarProducto();
 
     if (producto == null)
       return;
 
     producto.eliminar();
+    System.out.println("[+] Producto eliminado.");
   }
 
-  private Venta[] getVentasValidas() {
+  private Venta[] filtrarVentasValidas() {
     List<Venta> ventasFiltradas = new ArrayList<Venta>();
 
     for (Venta venta : ventas) {
@@ -313,35 +393,66 @@ public class Supermercado {
     return arreglo;
   }
 
+  private Venta seleccionarVenta() {
+    Venta[] ventasFiltradas = filtrarVentasValidas();
+
+    int i = 1;
+    System.out.println("\nVentas: ");
+    for (Venta venta : ventasFiltradas)
+      System.out.println((i++) + ".- " + venta.toString());
+    System.out.println("0.- Cancelar");
+
+    System.out.print("Seleccione una venta : ");
+    int valor = leer.unIntEnRango(ventasFiltradas.length);
+
+    if (valor == -1)
+      return null;
+
+    return ventasFiltradas[valor];
+  }
+
   public void mostrarVentas() {
-    for (Venta venta : getVentasValidas()) {
+    System.out.println("[#] Mostrar ventas. ");
+    for (Venta venta : filtrarVentasValidas()) {
       System.out.println("");
       venta.mostrar();
     }
   }
 
   public void capturarVenta() {
+    System.out.println("[#] Capturar venta.");
+
     List<DetalleVenta> carrito = new ArrayList<DetalleVenta>();
-    System.out.println("\nSeleccionar Cajero (necesario):");
+    System.out.println("\nSeleccionar Cajero:");
+    System.out.println("0.- Cancelar");
     Empleado empleado = (Empleado) seleccionarPersona("Empleado");
 
     if (empleado == null) {
-      System.out.println("[~] Saliendo.");
+      System.out.println("[+] Saliendo.");
       return;
     }
 
-    System.out.println("\nSeleccionar Cliente (opcional): ");
+    System.out.println("\nSeleccionar Cliente: ");
+    System.out.println("0.- Cliente no registrado");
     Cliente cliente = (Cliente) seleccionarPersona("Cliente");
 
-    System.out.print("\nSeleccionar productos (uno necesario):");
+    System.out.print("\nSeleccionar productos: ");
     Producto producto;
 
     do {
 
       while ((producto = seleccionarProducto()) != null) {
+        if (producto.getStock() == 0) {
+          System.err.println("[~] No hay stock de este producto.");
+          continue;
+        }
+
         DetalleVenta detalleVenta = new DetalleVenta(producto);
+        float puntos = detalleVenta.calcularTotal() / 100;
 
         carrito.add(detalleVenta);
+        actualizarStock(detalleVenta.getProducto(), detalleVenta.getCantidad() * -1);
+        actualizarPuntosCliente(cliente, puntos);
       }
 
       if (carrito.size() != 0)
@@ -352,15 +463,16 @@ public class Supermercado {
 
     System.out.println("");
     ventas[cVentas++] = new Venta(empleado, cliente, carrito);
+    System.out.println("[+] Venta agregada.");
 
   }
 
   public void buscarVenta() {
-    System.out.println("\nMenú Principal > Submenú > Buscar Producto");
+    System.out.println("\n[#] Buscar Producto");
     System.out.print("Ingrese valor a buscar : ");
     String valor = leer.unString();
 
-    for (Venta venta : getVentasValidas()) {
+    for (Venta venta : filtrarVentasValidas()) {
       if (!venta.buscar(valor))
         continue;
 
@@ -370,26 +482,250 @@ public class Supermercado {
   }
 
   public void modificarVenta() {
-    System.out.println("EN DESAROLLO");
+    System.out.println("\n[#] Modificar Venta");
+
+    Venta venta = seleccionarVenta();
+
+    if (venta == null)
+      return;
+
+    while (true) {
+      System.out.println("\nAtributos de la venta: ");
+      System.out.println("1) Empleado 2) Cliente 3) Carrito 0) Cancelar");
+      System.out.print("Seleccione una opción: ");
+      int opcion = leer.unIntEnRango(3);
+
+      if (opcion == -1)
+        break;
+
+      switch (opcion) {
+        case 0:
+          System.out.println("\n0.- Cancelar");
+          Empleado empleado = (Empleado) seleccionarPersona("Empleado");
+
+          if (empleado == null)
+            break;
+
+          venta.setEmpleado(empleado);
+          System.out.println("[+] Empleado modificado.");
+          break;
+        case 1:
+          System.out.println("\n0.- Cliente no registrado");
+          venta.setCliente((Cliente) seleccionarPersona("Cliente"));
+          System.out.println("[+] Cliente modificado.");
+          break;
+        case 2:
+          System.out.println("1) Agregar 2) Remover 0.- Cancelar");
+          System.out.print("Opción: ");
+          int opcion2 = leer.unIntEnRango(2);
+
+          if (opcion2 == -1)
+            break;
+
+          if (opcion2 == 0) {
+            Producto producto;
+
+            while ((producto = seleccionarProducto()) == null)
+              System.err.println("[~] Este campo no puede estar vacío.");
+
+            DetalleVenta detalle = new DetalleVenta(producto);
+            float puntos = detalle.calcularTotal() / 100;
+
+            venta.agregarDetalleVenta(detalle);
+            actualizarStock(detalle.getProducto(), detalle.getCantidad() * -1);
+            actualizarPuntosCliente(venta.getCliente(), puntos);
+
+          } else {
+
+            DetalleVenta detalle = venta.eliminarDetalleVenta();
+            float puntos = detalle.calcularTotal() / 100 * -1;
+
+            actualizarStock(detalle.getProducto(), detalle.getCantidad());
+            actualizarPuntosCliente(venta.getCliente(), puntos);
+          }
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   public void eliminarVenta() {
-    Venta[] ventasFiltradas = getVentasValidas();
+    Venta venta = seleccionarVenta();
 
-    int i = 1;
-    System.out.println("");
-    for (Venta venta : ventasFiltradas) {
-      System.out.println((i++) + ") " + venta.toString());
-    }
-    System.out.println("0.- Cancelar");
-
-    System.out.print("Seleccione un producto : ");
-    int valor = leer.unIntEnRango(ventasFiltradas.length);
-
-    if (valor == -1)
+    if (venta == null)
       return;
 
-    ventasFiltradas[valor].eliminar();
+    venta.eliminar();
+    System.out.println("[+] Venta eliminada.");
+  }
+
+  private Compra[] filtrarComprasValidas() {
+    List<Compra> lista = new ArrayList<Compra>();
+
+    for (Compra compra : compras) {
+      if (compra == null)
+        break;
+      if (compra.isEliminada())
+        continue;
+      lista.add(compra);
+    }
+
+    Compra[] arreglo = new Compra[lista.size()];
+    lista.toArray(arreglo);
+
+    return arreglo;
+  }
+
+  private void listarCompras() {
+    int i = 1;
+    for (Compra compra : filtrarComprasValidas()) {
+      System.out.println((i++) + ".- " + compra.toString());
+    }
+  }
+
+  private Compra seleccionarCompra() {
+    Compra[] compras = filtrarComprasValidas();
+
+    listarCompras();
+    System.out.print("Seleccione una compra: ");
+    int opcion = leer.unIntEnRango(compras.length);
+
+    if (opcion == -1)
+      return null;
+
+    return compras[opcion];
+  }
+
+  public void mostrarCompras() {
+    System.out.println("\n[#] Mostrar Compras");
+    for (Compra compra : filtrarComprasValidas()) {
+      System.out.println("");
+      compra.mostrar();
+    }
+  }
+
+  public void capturarCompra() {
+    System.out.println("\n[#] Capturar Compra");
+
+    Proveedor proveedor = (Proveedor) seleccionarPersona("Proveedor");
+
+    if (proveedor == null)
+      return;
+
+    List<DetalleCompra> carrito = new ArrayList<DetalleCompra>();
+
+    System.out.print("\nSeleccionar productos: ");
+
+    while (true) {
+      Producto producto;
+
+      while ((producto = seleccionarProducto()) != null) {
+        DetalleCompra detalle = new DetalleCompra(producto);
+
+        carrito.add(detalle);
+        actualizarStock(producto, detalle.getCantidad());
+      }
+
+      if (carrito.size() > 0)
+        break;
+
+      System.out.println("[~] Este campo no puede estar vacío.");
+    }
+
+    compras[cCompras++] = new Compra(proveedor, carrito);
+    System.out.println("\n[+] Compra registrada.");
+
+    System.out.println("¿Quieres imprimir la factura? 1) Si 2) No");
+    System.out.print("Opción: ");
+    if (leer.unIntEnRango(2) == 0) {
+      System.out.println("\n[+] Imprimiendo factura...");
+      compras[cCompras - 1].mostrar();
+    }
+  }
+
+  public void buscarCompra() {
+    System.out.println("\n[#] Buscar Compra");
+    System.out.print("Ingrese valor a buscar: ");
+    String valor = leer.unString();
+
+    for (Compra compra : filtrarComprasValidas()) {
+      if (!compra.buscar(valor))
+        continue;
+
+      System.out.println("");
+      compra.mostrar();
+    }
+
+  }
+
+  public void modificarCompra() {
+    System.out.println("\n[#] Modificar Compra");
+
+    Compra compra = seleccionarCompra();
+
+    if (compra == null)
+      return;
+
+    while (true) {
+      System.out.println("\nAtributos de la compra: ");
+      System.out.println("1) Proveedor 2) Carrito 0) Cancelar");
+      System.out.print("Seleccione una opción: ");
+      int opcion = leer.unIntEnRango(2);
+
+      if (opcion == -1)
+        break;
+
+      switch (opcion) {
+        case 0:
+          System.out.println("\n0.- Cancelar");
+          Proveedor proveedor = (Proveedor) seleccionarPersona("Proveedor");
+
+          if (proveedor == null)
+            break;
+          compra.setProveedor(proveedor);
+          System.out.println("[+] Proveedor actualizado.");
+          break;
+        case 1:
+          System.out.println("1) Agregar 2) Remover 0.- Cancelar");
+          System.out.print("Opción: ");
+          int opcion2 = leer.unIntEnRango(2);
+
+          if (opcion2 == -1)
+            break;
+
+          if (opcion2 == 0) {
+            Producto producto;
+
+            while ((producto = seleccionarProducto()) == null)
+              System.err.println("[~] Este campo no puede estar vacío.");
+
+            DetalleCompra detalle = new DetalleCompra(producto);
+
+            compra.agregarDetalleCompra(detalle);
+            actualizarStock(detalle.getProducto(), detalle.getCantidad());
+
+          } else {
+
+            DetalleCompra detalle = compra.eliminarDetalleCompra();
+
+            actualizarStock(detalle.getProducto(), detalle.getCantidad() * -1);
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  public void eliminarCompra() {
+    Compra compra = seleccionarCompra();
+
+    if (compra == null)
+      return;
+
+    compra.eliminar();
+    System.out.println("[+] Compra eliminada.");
   }
 
   private Persona[] filtrarPersonas() {
@@ -412,10 +748,10 @@ public class Supermercado {
 
   public void guardar() {
     archivo.setObjetos(filtrarPersonas(), "./db/personas.ponyfile");
-    archivo.setObjetos(getProductosValidos(), "./db/productos.ponyfile");
-    archivo.setObjetos(getVentasValidas(), "./db/ventas.ponyfile");
-
-    System.out.println("Información guardada");
+    archivo.setObjetos(filtrarProductosValidos(), "./db/productos.ponyfile");
+    archivo.setObjetos(filtrarVentasValidas(), "./db/ventas.ponyfile");
+    archivo.setObjetos(filtrarComprasValidas(), "./db/compras.ponyfile");
+    System.out.println("[+] Información guardada");
   }
 
   private void cargar() {
@@ -425,5 +761,47 @@ public class Supermercado {
       productos[cProductos++] = (Producto) obj;
     for (Object obj : archivo.getObjetos("./db/ventas.ponyfile"))
       ventas[cVentas++] = (Venta) obj;
+    for (Object obj : archivo.getObjetos("./db/compras.ponyfile"))
+      compras[cCompras++] = (Compra) obj;
+
+    System.out.println("[+] Información cargada");
+  }
+
+  public void mostrar() {
+    System.out.println("Nombre: " + nombre);
+    System.out.println("Dirección: " + direccion);
+  }
+
+  public String toString() {
+    return nombre;
+  }
+
+  public boolean equals(Object obj) {
+    if (obj == null)
+      return false;
+    if (obj == this)
+      return true;
+    if (!(obj instanceof Supermercado))
+      return false;
+
+    Supermercado tienda = (Supermercado) obj;
+
+    return tienda.nombre.equals(nombre) && tienda.direccion.equals(direccion);
+  }
+
+  public void setNombre(String nombre) {
+    this.nombre = nombre;
+  }
+
+  public void setDireccion(String direccion) {
+    this.direccion = direccion;
+  }
+
+  public String getNombre() {
+    return nombre;
+  }
+
+  public String getDireccion() {
+    return direccion;
   }
 }

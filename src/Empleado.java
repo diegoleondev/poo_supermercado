@@ -1,12 +1,11 @@
 public class Empleado extends Persona {
-  private String rfc;
-  private String fechaAdmicion;
+  private String fechaAdmision;
   private String fechaNacimiento;
   private String nSeguroSocial;
   private String personaContacto;
   private String departamento;
   private String posicion;
-  private int salario;
+  private float salario;
   private Leer leer = new Leer();
 
   public Empleado() {
@@ -14,11 +13,22 @@ public class Empleado extends Persona {
   };
 
   public Empleado(Persona persona, String rfc, String fechaAdmicion, String fechaNacimiento, String nSeguroSocial,
-      String personaContacto, String departamento, String posicion, int salario) {
+      String personaContacto, String departamento, String posicion, float salario) {
     super(persona);
+    this.fechaAdmision = fechaAdmicion;
+    this.fechaNacimiento = fechaNacimiento;
+    this.nSeguroSocial = nSeguroSocial;
+    this.personaContacto = personaContacto;
+    this.departamento = departamento;
+    this.posicion = posicion;
+    this.salario = salario;
+  }
 
-    this.rfc = rfc;
-    this.fechaAdmicion = fechaAdmicion;
+  public Empleado(String nombre, String rfc, char genero, String telefono, String correo,
+      String direccion, String fechaAdmicion, String fechaNacimiento, String nSeguroSocial,
+      String personaContacto, String departamento, String posicion, float salario) {
+    super(nombre, rfc, genero, telefono, correo, direccion);
+    this.fechaAdmision = fechaAdmicion;
     this.fechaNacimiento = fechaNacimiento;
     this.nSeguroSocial = nSeguroSocial;
     this.personaContacto = personaContacto;
@@ -31,8 +41,7 @@ public class Empleado extends Persona {
   public void mostrar() {
     super.mostrar();
 
-    System.out.println("RFC : " + rfc);
-    System.out.println("Fecha de admision : " + fechaAdmicion);
+    System.out.println("Fecha de admision : " + fechaAdmision);
     System.out.println("Fecha de nacimiento : " + fechaNacimiento);
     System.out.println("Número de seguro social : " + nSeguroSocial);
     System.out.println("Persona de contacto : " + personaContacto);
@@ -43,8 +52,7 @@ public class Empleado extends Persona {
 
   @Override
   public boolean buscar(String s) {
-    return (rfc
-        + fechaAdmicion
+    return (fechaAdmision
         + fechaNacimiento
         + nSeguroSocial
         + personaContacto
@@ -89,7 +97,7 @@ public class Empleado extends Persona {
           rfc = leer.unString();
           break;
         case 7:
-          fechaAdmicion = leer.unString();
+          fechaAdmision = leer.unString();
           break;
         case 8:
           fechaNacimiento = leer.unString();
@@ -119,11 +127,8 @@ public class Empleado extends Persona {
 
     super.capturar();
 
-    System.out.print("RFC : ");
-    rfc = leer.unString();
-
     System.out.print("Fecha de admision : ");
-    fechaAdmicion = leer.unString();
+    fechaAdmision = leer.unString();
 
     System.out.print("Fecha de nacimiento : ");
     fechaNacimiento = leer.unString();
@@ -141,7 +146,7 @@ public class Empleado extends Persona {
     posicion = leer.unString();
 
     System.out.print("Salario : ");
-    salario = leer.unInt();
+    salario = leer.unFloat();
   }
 
   public boolean equals(String rfc) {
@@ -157,20 +162,12 @@ public class Empleado extends Persona {
     return "Empleado".equals(nombre);
   }
 
-  public void setRfc(String rfc) {
-    this.rfc = rfc;
+  public void setFechaAdmision(String fechaIngreso) {
+    this.fechaAdmision = fechaIngreso;
   }
 
-  public String getRfc() {
-    return rfc;
-  }
-
-  public void setFechaAdmicion(String fechaIngreso) {
-    this.fechaAdmicion = fechaIngreso;
-  }
-
-  public String getFechaAdmicion() {
-    return fechaAdmicion;
+  public String getFechaAdmision() {
+    return fechaAdmision;
   }
 
   public void setFechaNacimiento(String fechaNacimiento) {
@@ -213,11 +210,11 @@ public class Empleado extends Persona {
     return posicion;
   }
 
-  public void setSalario(int sueldo) {
+  public void setSalario(float sueldo) {
     this.salario = sueldo;
   }
 
-  public int getSalario() {
+  public float getSalario() {
     return salario;
   }
 }
