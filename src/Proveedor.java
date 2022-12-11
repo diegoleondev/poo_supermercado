@@ -24,7 +24,8 @@ public class Proveedor extends Persona {
   @Override
   public void mostrar() {
     super.mostrar();
-
+    System.out.println("Razón Social: " + razonSocial);
+    System.out.println("Nombre Comercial: " + nombreComercial);
   }
 
   @Override
@@ -38,7 +39,7 @@ public class Proveedor extends Persona {
   public void modificar() {
     while (true) {
       System.out.println("\n1) Nombre 2) Género 3) Teléfono 4) Correo 5) Dirección");
-      System.out.println(" 6) RFC 7) Razón Social 8) Nombre Comercial 0) Cancelar");
+      System.out.println("6) RFC 7) Razón Social 8) Nombre Comercial 0) Cancelar");
       System.out.print("Indique una opción : ");
       int opcion = leer.unIntEnRango(8);
 

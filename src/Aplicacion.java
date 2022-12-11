@@ -1,17 +1,6 @@
 public class Aplicacion {
 
     public static void main(String[] args) throws Exception {
-        /*
-         * Datos data = new Datos();
-         * String[] folio = { "0" };
-         * 
-         * Archivo archivo = new Archivo();
-         * archivo.setCadenas(folio, "./db/folioCompra.ponyfile");
-         * archivo.setCadenas(folio, "./db/folioVenta.ponyfile");
-         * archivo.setCadenas(data.getCategorias(), "./db/categorias.ponyfile");
-         * archivo.setObjetos(data.getPersonas(), "./db/personas.ponyfile");
-         * archivo.setObjetos(data.getProductos(), "./db/productos.ponyfile");
-         */
         System.out.println("Panel de Direccion - Bodega Aurrera");
         Supermercado supermercado = new Supermercado("Bodega Aurrera", "Morelia");
 
@@ -107,6 +96,22 @@ public class Aplicacion {
                 case 65:
                     supermercado.eliminarCompra();
                     break;
+                case 71:
+                    supermercado.mostrarCategorias();
+                    break;
+                case 72:
+                    supermercado.capturarCategoria();
+                    break;
+                case 73:
+                    supermercado.buscarCategoria();
+                    break;
+                case 74:
+                    supermercado.modificarCategoria();
+                    break;
+                case 75:
+                    supermercado.eliminarCategoria();
+                    break;
+
                 case 999:
                     supermercado.guardar();
                     return;
@@ -118,10 +123,10 @@ public class Aplicacion {
         Leer leer = new Leer();
 
         System.out.println("\n[#] Menú Principal");
-        System.out.println("1) Cliente 2) Empleado 3) Proveedor 4) Producto 5) Venta 6) Compra 0) Salir");
+        System.out.println("1) Cliente 2) Empleado 3) Proveedor 4) Producto 5) Venta 6) Compra 7) Categorías 0) Salir");
         System.out.print("Opción : ");
 
-        int opccion = (leer.unIntEnRango(6) + 1) * 10;
+        int opccion = (leer.unIntEnRango(7) + 1) * 10;
         if (opccion == 0)
             return 999;
 

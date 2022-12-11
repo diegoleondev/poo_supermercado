@@ -13,6 +13,8 @@ public class Supermercado {
   private int cVentas = 0;
   private Compra[] compras = new Compra[500];
   private int cCompras = 0;
+  private String[] categorias = new String[500];
+  private int cCategorias = 0;
 
   Leer leer = new Leer();
   Archivo archivo = new Archivo();
@@ -26,6 +28,123 @@ public class Supermercado {
 
   public void inicializar() {
     cargar();
+  }
+
+  public String[] filtrarCategorias() {
+    List<String> categorias = new ArrayList<String>();
+
+    for (String categoria : this.categorias) {
+      if (categoria == null)
+        break;
+      if (categoria.isEmpty())
+        continue;
+
+      categorias.add(categoria);
+    }
+
+    String[] categoriasFiltradas = new String[categorias.size()];
+    categorias.toArray(categoriasFiltradas);
+
+    return categoriasFiltradas;
+  }
+
+  private String seleccionarCategoria() {
+    String[] categorias = filtrarCategorias();
+
+    System.out.println("\nCategorías : ");
+    int i = 1;
+    for (String categoria : categorias) {
+      System.out.print((i++) + ") " + categoria + "\n");
+    }
+    System.out.print("Indique la Categoría: ");
+    int iCategoria;
+
+    while ((iCategoria = leer.unIntEnRango(categorias.length)) == -1) {
+      System.out.print("No puede dejar este campo vacío, vuelva a seleccionar : ");
+    }
+
+    return categorias[iCategoria];
+  }
+
+  public void mostrarCategorias() {
+    System.out.println("\n[#] Mostrar categorías");
+
+    for (String categoria : filtrarCategorias()) {
+      System.out.println("\n " + categoria);
+    }
+  }
+
+  public void capturarCategoria() {
+    System.out.println("\n[#] Capturar categoría");
+    System.out.print("Ingrese el nombre de la categoría : ");
+    String categoria = leer.unString();
+
+    categorias[cCategorias++] = categoria;
+    System.out.println("[+] Categoría agregada. ");
+  }
+
+  public void buscarCategoria() {
+    System.out.println("\n[#] Buscar categoría");
+    System.out.println("Ingrese el valor a buscar : ");
+    String valor = leer.unString();
+
+    for (String categoria : filtrarCategorias()) {
+      if (!categoria.equals(valor))
+        continue;
+
+      System.out.println(categoria);
+      return;
+    }
+  }
+
+  public void modificarCategoria() {
+    System.out.println("\n[#] Modificar categoría");
+    String categoria = seleccionarCategoria();
+
+    for (int i = 0; i < categorias.length; i++) {
+      String cat = categorias[i];
+      if (cat == null)
+        break;
+      if (cat.isEmpty())
+        continue;
+      if (!cat.equals(categoria))
+        continue;
+
+      System.out.print("Ingrese el nuevo nombre de la categoría : ");
+      String nuevoNombre = leer.unString();
+
+      categorias[i] = nuevoNombre;
+      System.out.println("[+] Categoría modificada. ");
+
+      for (Producto producto : filtrarProductosValidos()) {
+        if (!producto.getCategoria().equals(categoria))
+          continue;
+
+        producto.setCategoria(nuevoNombre);
+      }
+
+      System.out.println("[+] Categoría modificada en los productos. ");
+      return;
+    }
+
+  }
+
+  public void eliminarCategoria() {
+    System.out.println("\n[#] Eliminar categoría");
+    String categoria = seleccionarCategoria();
+
+    for (int i = 0; i < categorias.length; i++) {
+      String cat = categorias[i];
+      if (cat == null)
+        break;
+      if (cat.isEmpty())
+        continue;
+      if (cat.equals(categoria)) {
+        categorias[i] = "";
+        System.out.println("[+] Categoría eliminada. ");
+        return;
+      }
+    }
   }
 
   private void actualizarStock(Producto producto, int cantidad) {
@@ -222,24 +341,6 @@ public class Supermercado {
 
   public void eliminarProveedor() {
     eliminarPersona("Proveedor");
-  }
-
-  private String seleccionarCategoria() {
-    String[] CATEGORIAS = archivo.getCadenas("./db/categorias.ponyfile");
-
-    System.out.println("\nCategorías : ");
-    int i = 1;
-    for (String categoria : CATEGORIAS) {
-      System.out.print((i++) + ") " + categoria + " \n");
-    }
-    System.out.print("Indique la Categoría: ");
-    int iCategoria;
-
-    while ((iCategoria = leer.unIntEnRango(CATEGORIAS.length)) == -1) {
-      System.out.print("No puede dejar este campo vacío, vuelva a seleccionar : ");
-    }
-
-    return CATEGORIAS[iCategoria];
   }
 
   private Producto[] filtrarProductosValidos() {
@@ -751,6 +852,7 @@ public class Supermercado {
     archivo.setObjetos(filtrarProductosValidos(), "./db/productos.ponyfile");
     archivo.setObjetos(filtrarVentasValidas(), "./db/ventas.ponyfile");
     archivo.setObjetos(filtrarComprasValidas(), "./db/compras.ponyfile");
+    archivo.setCadenas(filtrarCategorias(), "./db/categorias.ponyfile");
     System.out.println("[+] Información guardada");
   }
 
@@ -763,7 +865,8 @@ public class Supermercado {
       ventas[cVentas++] = (Venta) obj;
     for (Object obj : archivo.getObjetos("./db/compras.ponyfile"))
       compras[cCompras++] = (Compra) obj;
-
+    for (String categoria : archivo.getCadenas("./db/categorias.ponyfile"))
+      categorias[cCategorias++] = categoria;
     System.out.println("[+] Información cargada");
   }
 

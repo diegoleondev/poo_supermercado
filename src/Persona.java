@@ -67,7 +67,7 @@ public class Persona implements Acciones, Serializable {
 
   public void mostrar() {
     System.out.println("Nombre : " + nombre);
-    System.out.println("Nombre : " + rfc);
+    System.out.println("RFC : " + rfc);
     System.out.println("Género : " + genero);
     System.out.println("Teléfono : " + telefono);
     System.out.println("Correo : " + correo);

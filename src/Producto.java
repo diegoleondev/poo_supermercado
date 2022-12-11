@@ -123,7 +123,6 @@ public class Producto implements Acciones, Serializable {
     System.out.print("Precio : ");
     precio = leer.unFloat();
 
-    System.out.println("Categoría : ");
     categoria = seleccionarCategoria();
   }
 

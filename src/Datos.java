@@ -5,13 +5,7 @@ public class Datos {
   public String[] getCategorias() {
     String[] categorias = {
         "Pantallas, Audio e Instrumentos Musicales", "Hogar y Ferretería", "Farmacia y Cuidado de la Salud",
-        "Ropa, Zapatos y Accesorio", "Celulares, Cámaras y Casa Inteligente", "Electrodomésticos y Línea Blanca",
-        "Computadoras y Tablets", "Videojuegos y Consolas", "Deportes y Aire Libre", "Juguetes y Bebés",
-        "Libros, Películas y Música", "Mascotas y Jardín", "Belleza y Cuidado Personal",
-        "Herramientas y Mejoras del Hogar",
-        "Industria, Empresas y Ciencia", "Arte, Papelería y Mercería", "Alimentos y Bebidas",
-        "Automotriz y Motocicletas",
-        "Salud y Equipamiento Médico", "Oficina y Papelería", "Servicios"
+        "Ropa, Zapatos y Accesorio",
     };
     return categorias;
   }
@@ -35,30 +29,68 @@ public class Datos {
 
   public Producto[] getProductos() {
     Producto[] productos = {
-        new Producto("Lavadora Samsung A678", "Secado rapido", "Electrodomésticos y Línea Blanca", 5000.00f, 10),
-        new Producto("Lavadora LG A68+", "Secado rapido", "Electrodomésticos y Línea Blanca", 5000.00f, 10),
-        new Producto("Samsung Galaxy S10", "8GB de RAM", "Celulares, Cámaras y Casa Inteligente", 5000.00f, 10),
-        new Producto("Samsung Galaxy S9", "7GB de RAM", "Celulares, Cámaras y Casa Inteligente", 5000.00f, 10),
-        new Producto("Samsung Galaxy S8", "6GB de RAM", "Celulares, Cámaras y Casa Inteligente", 5000.00f, 10),
-        new Producto("Samsung Galaxy S7", "5GB de RAM", "Celulares, Cámaras y Casa Inteligente", 5000.00f, 10),
-        new Producto("LG G12", "14 mega pixeles", "Celulares, Cámaras y Casa Inteligente", 5000.00f, 10),
-        new Producto("LG G11", "13 mega pixeles", "Celulares, Cámaras y Casa Inteligente", 5000.00f, 10),
-        new Producto("LG G10", "12 mega pixeles", "Celulares, Cámaras y Casa Inteligente", 5000.00f, 10),
-        new Producto("Samsung T56", "80\"", "Pantallas, Audio e Instrumentos Musicales", 5000.00f, 10),
-        new Producto("Samsung T55", "70\"", "Pantallas, Audio e Instrumentos Musicales", 5000.00f, 10),
-        new Producto("Samsung T54", "50\"", "Pantallas, Audio e Instrumentos Musicales", 5000.00f, 10),
-        new Producto("Samsung T53", "60\"", "Pantallas, Audio e Instrumentos Musicales", 5000.00f, 10),
-        new Producto("LG C75", "100\"", "Pantallas, Audio e Instrumentos Musicales", 5000.00f, 10),
-        new Producto("LG C74", "90\"", "Pantallas, Audio e Instrumentos Musicales", 5000.00f, 10),
-        new Producto("LG C73", "80\"", "Pantallas, Audio e Instrumentos Musicales", 5000.00f, 10),
-        new Producto("LG C72", "70\"", "Pantallas, Audio e Instrumentos Musicales", 5000.00f, 10),
-        new Producto("Cama King Size", "Cama King Size comoda y confortable", "Hogar y Ferretería", 5000.00f, 10),
-        new Producto("Comedor MOKK", "Comedor de 6 sillas", "Hogar y Ferretería", 5000.00f, 10),
-        new Producto("Comedor MOKK", "Comedor de 4 sillas", "Hogar y Ferretería", 5000.00f, 10),
-        new Producto("Sillon Kubik", "Sillon de 3 piezas", "Hogar y Ferretería", 5000.00f, 10),
-        new Producto("Maceta", "Maceta de 1 pieza", "Hogar y Ferretería", 5000.00f, 10),
+        null
     };
 
     return productos;
   }
 }
+
+/*
+ * 
+ * Datos data = new Datos();
+ * String[] folio = { "0" };
+ * 
+ * Archivo archivo = new Archivo();
+ * archivo.setCadenas(folio, "./db/folioCompra.ponyfile");
+ * archivo.setCadenas(folio, "./db/folioVenta.ponyfile");
+ * archivo.setCadenas(data.getCategorias(), "./db/categorias.ponyfile");
+ * archivo.setObjetos(data.getPersonas(), "./db/personas.ponyfile");
+ * archivo.setObjetos(data.getProductos(), "./db/productos.ponyfile");
+ */
+/*
+ * new Producto("Lavadora Samsung A678", "Secado rapido",
+ * "Electrodomésticos y Línea Blanca", 5000.00f, 10),
+ * new Producto("Lavadora LG A68+", "Secado rapido",
+ * "Electrodomésticos y Línea Blanca", 5000.00f, 10),
+ * new Producto("Samsung Galaxy S10", "8GB de RAM",
+ * "Celulares, Cámaras y Casa Inteligente", 5000.00f, 10),
+ * new Producto("Samsung Galaxy S9", "7GB de RAM",
+ * "Celulares, Cámaras y Casa Inteligente", 5000.00f, 10),
+ * new Producto("Samsung Galaxy S8", "6GB de RAM",
+ * "Celulares, Cámaras y Casa Inteligente", 5000.00f, 10),
+ * new Producto("Samsung Galaxy S7", "5GB de RAM",
+ * "Celulares, Cámaras y Casa Inteligente", 5000.00f, 10),
+ * new Producto("LG G12", "14 mega pixeles",
+ * "Celulares, Cámaras y Casa Inteligente", 5000.00f, 10),
+ * new Producto("LG G11", "13 mega pixeles",
+ * "Celulares, Cámaras y Casa Inteligente", 5000.00f, 10),
+ * new Producto("LG G10", "12 mega pixeles",
+ * "Celulares, Cámaras y Casa Inteligente", 5000.00f, 10),
+ * new Producto("Samsung T56", "80\"",
+ * "Pantallas, Audio e Instrumentos Musicales", 5000.00f, 10),
+ * new Producto("Samsung T55", "70\"",
+ * "Pantallas, Audio e Instrumentos Musicales", 5000.00f, 10),
+ * new Producto("Samsung T54", "50\"",
+ * "Pantallas, Audio e Instrumentos Musicales", 5000.00f, 10),
+ * new Producto("Samsung T53", "60\"",
+ * "Pantallas, Audio e Instrumentos Musicales", 5000.00f, 10),
+ * new Producto("LG C75", "100\"", "Pantallas, Audio e Instrumentos Musicales",
+ * 5000.00f, 10),
+ * new Producto("LG C74", "90\"", "Pantallas, Audio e Instrumentos Musicales",
+ * 5000.00f, 10),
+ * new Producto("LG C73", "80\"", "Pantallas, Audio e Instrumentos Musicales",
+ * 5000.00f, 10),
+ * new Producto("LG C72", "70\"", "Pantallas, Audio e Instrumentos Musicales",
+ * 5000.00f, 10),
+ * new Producto("Cama King Size", "Cama King Size comoda y confortable",
+ * "Hogar y Ferretería", 5000.00f, 10),
+ * new Producto("Comedor MOKK", "Comedor de 6 sillas", "Hogar y Ferretería",
+ * 5000.00f, 10),
+ * new Producto("Comedor MOKK", "Comedor de 4 sillas", "Hogar y Ferretería",
+ * 5000.00f, 10),
+ * new Producto("Sillon Kubik", "Sillon de 3 piezas", "Hogar y Ferretería",
+ * 5000.00f, 10),
+ * new Producto("Maceta", "Maceta de 1 pieza", "Hogar y Ferretería", 5000.00f,
+ * 10),
+ */

@@ -55,6 +55,10 @@ public class DetalleVenta implements Serializable {
     this.cantidad = cantidad;
   }
 
+  public boolean equals(String nombre) {
+    return producto.getNombre().equals(nombre);
+  }
+
   public int getCantidad() {
     return cantidad;
   }
